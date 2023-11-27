@@ -1,6 +1,6 @@
 # alpine-packages
 
-Private Alpine Package Manager.
+Private Alpine Package Manager / Mirror.
 
 # Getting Started
 
