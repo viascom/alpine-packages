@@ -1,0 +1,4 @@
+bash
+dumb-init
+alpine-sdk
+lighttpd

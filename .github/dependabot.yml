@@ -1,0 +1,28 @@
+version: 2
+
+updates:
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "11:00"
+      timezone: "Europe/Zurich"
+    target-branch: "main"
+    labels:
+      - "github-actions"
+      - "dependencies"
+
+  # Enable version updates for docker container
+  - package-ecosystem: "docker"
+    directory: "/docker"
+    schedule:
+      interval: "daily"
+      time: "11:00"
+      timezone: "Europe/Zurich"
+    target-branch: "main"
+    labels:
+      - "alpine"
+      - "docker"
+      - "dependencies"
