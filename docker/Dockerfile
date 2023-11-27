@@ -24,8 +24,9 @@ RUN set -eux; \
     rm -rf /var/cache/apk/*; \
     rm -rf /tmp/*
 
-COPY archive.sh $HOME
-RUN chown -R $USER:$GROUP $HOME/archive.sh; \
+COPY .bashrc archive.sh $HOME
+RUN chown -R $USER:$GROUP $HOME/.bashrc; \
+    chown -R $USER:$GROUP $HOME/archive.sh; \
     chmod +x $HOME/archive.sh
 
 COPY lighttpd.conf /etc/lighttpd/lighttpd.conf
