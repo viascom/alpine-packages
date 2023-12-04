@@ -1,4 +1,10 @@
+coreutils
+vim
+gpg
 bash
+curl
+ca-certificates
 dumb-init
 alpine-sdk
 lighttpd
+jq

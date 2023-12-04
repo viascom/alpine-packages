@@ -1,3 +1,10 @@
+FROM golang:1.21.4-alpine AS builder
+WORKDIR /app
+COPY api/go.mod api/go.sum ./
+RUN go mod download
+COPY api/ .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o api .
+
 FROM alpine:3.18.5
 
 ENV USER=exie \
@@ -24,12 +31,18 @@ RUN set -eux; \
     rm -rf /var/cache/apk/*; \
     rm -rf /tmp/*
 
-COPY .bashrc archive.sh $HOME
-RUN chown -R $USER:$GROUP $HOME/.bashrc; \
-    chown -R $USER:$GROUP $HOME/archive.sh; \
-    chmod +x $HOME/archive.sh
+COPY .bashrc archive.sh start-services.sh $HOME/
+RUN chown $USER:$GROUP $HOME/.bashrc; \
+    chown $USER:$GROUP $HOME/archive.sh; \
+    chmod +x $HOME/archive.sh; \
+    chown $USER:$GROUP $HOME/start-services.sh; \
+    chmod +x $HOME/start-services.sh
 
 COPY lighttpd.conf /etc/lighttpd/lighttpd.conf
+
+COPY --from=builder /app/api $HOME/api
+RUN chown $USER:$GROUP $HOME/api; \
+    chmod +x $HOME/api
 
 USER $USER
 WORKDIR $HOME
@@ -38,4 +51,4 @@ SHELL ["/bin/bash", "-c"]
 RUN set -eux; \
     mkdir -p packages/{aarch64,armhf,armv7,ppc64le,s390x,x86,x86_64}
 
-CMD ["/usr/bin/dumb-init", "lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
+CMD ["/usr/bin/dumb-init", "/home/exie/start-services.sh"]

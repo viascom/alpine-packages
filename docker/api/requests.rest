@@ -1,0 +1,22 @@
+POST localhost:29536/archive
+Authorization: Basic local-dev local-dev
+Content-Type: application/json
+
+{
+  "package_names": [
+    "curl",
+    "vim"
+  ]
+}
+
+###
+
+POST localhost:29536/archive
+Authorization: Basic local-dev local-dev
+Content-Type: application/json
+
+{
+  "package_names": [
+    "qwertzuiasdfghj"
+  ]
+}
