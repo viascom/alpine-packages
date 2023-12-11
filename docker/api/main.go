@@ -44,13 +44,30 @@ func BasicAuthMiddleware(handler http.HandlerFunc) http.HandlerFunc {
 }
 
 func RunScript(packageNames []string) {
-	cmd := exec.Command("/bin/bash", "/home/exie/archive.sh")
-	cmd.Args = append(cmd.Args, packageNames...)
-	output, err := cmd.CombinedOutput()
+	logFile, err := os.OpenFile("/var/log/alpine-packages/packages.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.WithFields(logrus.Fields{
+			"error": err,
+		}).Error("Failed to open log file")
+		return
+	}
+
+	defer func() {
+		if closeErr := logFile.Close(); closeErr != nil {
+			log.WithFields(logrus.Fields{
+				"error": closeErr,
+			}).Error("Failed to close log file")
+		}
+	}()
+
+	cmd := exec.Command("/bin/bash", "/home/exie/archive.sh")
+	cmd.Args = append(cmd.Args, packageNames...)
+	cmd.Stdout = logFile
+	cmd.Stderr = logFile
+
+	if err := cmd.Run(); err != nil {
+		log.WithFields(logrus.Fields{
 			"error":   err,
-			"output":  string(output),
 			"command": "archive.sh",
 		}).Error("Error running script")
 	}
@@ -102,6 +119,16 @@ func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	file, err := os.OpenFile("/var/log/alpine-packages/alpine-packages-api.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err == nil {
+		log.Out = file
+	} else {
+		log.Info("Failed to log to file, using default stderr")
+	}
+	log.Info("This is some information")
+
+	defer file.Close()
+
 	flag.Parse()
 
 	if *username == "" || *password == "" || *port == "" {

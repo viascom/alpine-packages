@@ -4,7 +4,7 @@
 # Constants
 readonly REPO_PATH="$HOME/packages"
 readonly ARCHS=("aarch64" "armhf" "armv7" "ppc64le" "s390x" "x86" "x86_64")
-readonly LOG_FILE="$HOME/packages.log"
+readonly LOG_FILE="/var/log/alpine-packages/packages.log"
 
 error() {
   local msg="$*"
@@ -65,6 +65,7 @@ log_package() {
   local old_ifs="$IFS"
   IFS=', '
 
+  mkdir -p "$(dirname "$LOG_FILE")"
   printf "%s | %s | %s | %s\n" "$package_name" "$date_added" "${archs[*]}" "$alpine_version" >>"$LOG_FILE"
 
   IFS="$old_ifs"

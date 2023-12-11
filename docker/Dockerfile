@@ -36,7 +36,9 @@ RUN chown $USER:$GROUP $HOME/.bashrc; \
     chown $USER:$GROUP $HOME/archive.sh; \
     chmod +x $HOME/archive.sh; \
     chown $USER:$GROUP $HOME/start-services.sh; \
-    chmod +x $HOME/start-services.sh
+    chmod +x $HOME/start-services.sh; \
+    mkdir -p /var/log/alpine-packages/; \
+    chown -R $USER:$GROUP /var/log/alpine-packages/
 
 COPY lighttpd.conf /etc/lighttpd/lighttpd.conf
 
