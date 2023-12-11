@@ -49,8 +49,4 @@ RUN chown $USER:$GROUP $HOME/api; \
 USER $USER
 WORKDIR $HOME
 SHELL ["/bin/bash", "-c"]
-
-RUN set -eux; \
-    mkdir -p packages/{aarch64,armhf,armv7,ppc64le,s390x,x86,x86_64}
-
 CMD ["/usr/bin/dumb-init", "/home/exie/start-services.sh"]
