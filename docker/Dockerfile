@@ -11,7 +11,10 @@ ENV USER=exie \
     GROUP=party \
     CUSTOM_UID=1001 \
     TZ=UTC \
-    LANG=en_US.utf8
+    LANG=en_US.utf8 \
+    API_USERNAME=local-dev \
+    API_PASSWORD=local-dev \
+    API_PORT=8081
 
 ENV LANGUAGE=$LANG \
     HOME=/home/$USER
