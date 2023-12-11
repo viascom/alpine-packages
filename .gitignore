@@ -2,3 +2,4 @@
 .idea
 *.rsa
 *.rsa.pub
+http-client.private.env.json

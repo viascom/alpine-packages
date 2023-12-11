@@ -1,4 +1,4 @@
-POST localhost:29536/archive
+POST {{host}}/archive
 Authorization: Basic local-dev local-dev
 Content-Type: application/json
 
@@ -11,7 +11,7 @@ Content-Type: application/json
 
 ###
 
-POST localhost:29536/archive
+POST {{host}}/archive
 Authorization: Basic local-dev local-dev
 Content-Type: application/json
 
