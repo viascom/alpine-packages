@@ -19,11 +19,11 @@ ENV USER=exie \
 ENV LANGUAGE=$LANG \
     HOME=/home/$USER
 
-COPY packages.list /tmp
+COPY packages.list configure-repositories.sh /tmp/
 
 RUN set -eux; \
-    echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" | tee -a /etc/apk/repositories > /dev/null; \
-    echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" | tee -a /etc/apk/repositories > /dev/null; \
+    chmod +x /tmp/configure-repositories.sh; \
+    sh /tmp/configure-repositories.sh; \
     apk -U upgrade; \
     apk -v add util-linux alpine-conf; \
     xargs -r apk -v add < /tmp/packages.list; \
