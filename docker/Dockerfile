@@ -5,7 +5,7 @@ RUN go mod download
 COPY api/ .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o api .
 
-FROM alpine:3.19.1
+FROM alpine:3.20.1
 
 ENV USER=exie \
     GROUP=party \
